@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 const state = {
   routes: []
 }
@@ -10,9 +8,12 @@ const getters = {
 
 const actions = {
   async fetchRoutes({ commit }) {
-    await axios.get('http://www.transitchicago.com/api/1.0/routes.aspx').then(res => {
+    await this._vm.$http.get('http://www.transitchicago.com/api/1.0/routes.aspx', { crossdomain: true }).then(res => {
+      debugger // eslint-disable-line  
       commit('setRoutes', res.data)
     }).catch(err => {
+      debugger // eslint-disable-line  
+
       console.log(err)
     })
   }
