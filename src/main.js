@@ -5,6 +5,8 @@ import axios from 'axios'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import SuiVue from 'semantic-ui-vue';
+import 'semantic-ui-css/semantic.min.css';
 
 library.add(faUserSecret)
 
@@ -14,6 +16,8 @@ Vue.config.productionTip = false
 Vue.config.devtools = true
 
 const ctaBaseURL = "https://pohlfolio-backend.herokuapp.com/api/v1/"
+Vue.use(SuiVue);
+
 
 const v1API = axios.create({
     baseURL: `${ctaBaseURL}`,
