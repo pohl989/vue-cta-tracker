@@ -1,7 +1,7 @@
 const state = {
   trains: [],
   stations: [],
-  arrivals: [],
+  arrivals: {},
 }
 
 const getters = {
@@ -33,11 +33,11 @@ const actions = {
       })
     })
   },
-  fetchArrivals ({commit}, filters) {
+  fetchArrivals ({commit}, params) {
     const http = this._vm.$http 
     return new Promise((resolve, reject) => {
-      http.get('/train_tracker', {params: filters}).then(response => {
-        commit('setArrivals', response.data)
+      http.get('/train_tracker', {params: params}).then(response => {
+        commit('setArrivals', response.data.ctatt)
         resolve(response) 
       }).catch(error => {
         reject(error) 

@@ -24,7 +24,7 @@
       </option>
     </select>
     <label>Stations </label>
-    <select v-model="mapId" @change="getStation" >
+    <select v-model="mapId" @change="getUpdate" >
       <option 
         v-for="station in selectedTrainStations" 
         :key="station.map_id" 
@@ -38,6 +38,20 @@
     </div>
     <div v-else> 
       <h3>Station - {{this.selectedStation.station_name}}</h3>
+      <h4>{{this.getArrivals["tmst"]}}</h4>
+      <ul>
+        <li v-for="arrival in getArrivals['eta']" :key="arrival['rn']" >
+          <h5>
+            {{arrival["stpDe"]}}
+          </h5>
+          <p>
+            {{arrival["arrT"]}}
+          </p>
+          <p>
+            {{arrival["prdt"]}}
+          </p>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -73,12 +87,16 @@ export default {
       })
       this.selectedTrainStations = stations
     },
+    getUpdate: function() {
+      this.getStation()
+      this.fetchArrivals({mapid: this.mapId})
+    },
     getStation: function() {
       this.selectedStation = this.stations.find(station => station.map_id === this.mapId)
     }
   },
   computed: {
-    ...mapGetters(['getTrains'])
+    ...mapGetters(['getTrains', 'getArrivals'])
   },
   mounted() {
     const vue = this
