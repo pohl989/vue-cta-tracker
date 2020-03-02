@@ -20,7 +20,7 @@
         :key="train.code" 
         :value="train.code"
       >
-        {{train.label}}
+        {{train.name}}
       </option>
     </select>
     <label>Stations </label>
@@ -38,17 +38,17 @@
     </div>
     <div v-else> 
       <h3>Station - {{this.selectedStation.station_name}}</h3>
-      <h4>{{this.getArrivals["tmst"]}}</h4>
       <ul>
-        <li v-for="arrival in getArrivals['eta']" :key="arrival['rn']" >
+        <li v-for="(arrival, index) in this.getArrivals" :key="index" >
           <h5>
-            {{arrival["stpDe"]}}
+            {{arrival.stop_destination}}
+            {{arrival.destination}}
           </h5>
           <p>
-            {{arrival["arrT"]}}
+            {{ arrival.departure_time}}
           </p>
           <p>
-            {{arrival["prdt"]}}
+            {{arrival.arrival_time}}
           </p>
         </li>
       </ul>

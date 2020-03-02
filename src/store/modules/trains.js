@@ -1,13 +1,21 @@
+import {formatDistance, format} from 'date-fns'
+
 const state = {
   trains: [],
   stations: [],
-  arrivals: {},
+  arrivals: {eta: []},
 }
 
 const getters = {
   getTrains: (state) => state.trains,
   getStations: (state) => state.stations, 
-  getArrivals: (state) => state.arrivals
+  getArrivals: (state) => state.arrivals["eta"].map(arrival => {
+    const prediction_generated = new Date(arrival.prdt)
+    const destination = arrival.destNm 
+    const arrival_time = format(new Date(arrival.arrT), 'p') 
+    const stop_destination = arrival.stpDe
+    return {prediction_generated, destination, arrival_time, stop_destination}
+  })
 }
 
 const actions = {
