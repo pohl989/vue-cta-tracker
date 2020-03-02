@@ -33,6 +33,12 @@
         {{station.station_name}}
       </option>
     </select>
+    <div v-if="!this.selectedStation">
+      Please select Train and Station 
+    </div>
+    <div v-else> 
+      <h3>Station - {{this.selectedStation.station_name}}</h3>
+    </div>
   </div>
 </template>
 
@@ -60,10 +66,15 @@ export default {
   methods: {
     ...mapActions(['fetchStations', 'fetchArrivals']),
     getStations: function() {
-      this.mapId = this.stations.filter(station => station[this.selectedTrain])
+      const stationMapIds = this.stations.filter(station => station[this.selectedTrain]).map(station => station.map_id)
+      const mapIds = [ ...new Set(stationMapIds)] 
+      const stations = mapIds.map(id => {
+        return this.stations.find(station => station.map_id === id)
+      })
+      this.selectedTrainStations = stations
     },
     getStation: function() {
-      this.mapId = this.stations.find(station => station[this.mapId])
+      this.selectedStation = this.stations.find(station => station.map_id === this.mapId)
     }
   },
   computed: {
