@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex'
-import routes from './modules/routes'
+import trains from './modules/trains'
 
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    routes,
+    trains,
   }
 })
