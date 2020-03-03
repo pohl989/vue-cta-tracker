@@ -14,7 +14,8 @@ const getters = {
     const destination = arrival.destNm 
     const arrival_time = format(new Date(arrival.arrT), 'p') 
     const stop_destination = arrival.stpDe
-    return {prediction_generated, destination, arrival_time, stop_destination}
+    const run_number = arrival.rn
+    return {prediction_generated, destination, arrival_time, stop_destination, run_number}
   })
 }
 

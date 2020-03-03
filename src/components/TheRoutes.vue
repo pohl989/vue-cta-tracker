@@ -1,28 +1,22 @@
 <template>
-  <div>
-    I love my Chico
-    <TheSpinner />
-      <sui-icon name="heart" color="red" inverted />
-      <sui-icon name="heart" color="orange" inverted />
-      <sui-icon name="heart" color="violet" inverted />
-      <sui-icon name="heart" color="purple" inverted />
-      <sui-icon name="heart" color="pink" inverted />    
-    <div is="sui-segment" inverted>
-      <sui-button basic color="red" inverted>Get Routes</sui-button>
-      <sui-button basic color="teal" inverted>Get </sui-button>
-      <sui-button basic color="purple" inverted>Basic Purple</sui-button>
-      <sui-button basic color="pink" inverted>Basic Pink</sui-button>
-    </div>  
-    <label>Trains </label>
-    <select v-model="selectedTrain" @change="getStations" >
-      <option 
+  <div is="sui-segment" inverted>
+    <h2>Select A Train Line</h2>    
+    <div v-if="!isLoading">
+      <TheSpinner />
+    </div>
+    <div v-else class="train-selection-buttons">
+      <sui-button 
         v-for="train in trains" 
         :key="train.code" 
-        :value="train.code"
+        basic 
+        :color="train.color_name" 
+        inverted
+        :class="{'active': train.code === selectedTrain}" 
+        @click.native="updateSelectedTrain(train.code)"
       >
         {{train.name}}
-      </option>
-    </select>
+      </sui-button>
+    </div>
     <label>Stations </label>
     <select v-model="mapId" @change="getUpdate" >
       <option 
@@ -33,44 +27,40 @@
         {{station.station_name}}
       </option>
     </select>
+      <sui-dropdown
+        placeholder="Station"
+        selection
+        :options="stationSelectionList"
+        v-model="mapId"
+        @change.native="testFunc"
+      />
     <div v-if="!this.selectedStation">
       Please select Train and Station 
     </div>
     <div v-else> 
       <h3>Station - {{this.selectedStation.station_name}}</h3>
-      <ul>
-        <li v-for="(arrival, index) in this.getArrivals" :key="index" >
-          <h5>
-            {{arrival.stop_destination}}
-            {{arrival.destination}}
-          </h5>
-          <p>
-            {{ arrival.departure_time}}
-          </p>
-          <p>
-            {{arrival.arrival_time}}
-          </p>
-        </li>
-      </ul>
+      <TrainArrival v-for="arrival in getArrivals" :arrival="arrival" :key="arrival.run_number" /> 
     </div>
   </div>
 </template>
 
 <script>
 import TheSpinner from './TheSpinner'
+import TrainArrival from './TrainArrival'
+import TrainLineSelection from './TrainLineSelection'
 
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: "TheRoutes",
-  components: { TheSpinner },
+  components: { TheSpinner, TrainArrival },
   data: function(){
     return {
       isLoading: true, 
       errMessage: "",
       hasError: false,
       trains: [],
-      selectedTrain: null, 
+      selectedTrain: "brn", 
       stations: [],
       selectedTrainStations: [],
       mapId: null, 
@@ -79,6 +69,13 @@ export default {
   },
   methods: {
     ...mapActions(['fetchStations', 'fetchArrivals']),
+    testFunc: function(e) {
+      debugger
+    },
+    updateSelectedTrain: function(code) {
+      this.selectedTrain = code
+      this.getStations()
+    },
     getStations: function() {
       const stationMapIds = this.stations.filter(station => station[this.selectedTrain]).map(station => station.map_id)
       const mapIds = [ ...new Set(stationMapIds)] 
@@ -96,7 +93,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getTrains', 'getArrivals'])
+    ...mapGetters(['getTrains', 'getArrivals']),
+    stationSelectionList: function() {
+      const list = this.selectedTrainStations.map(station => {
+        const text = station.station_name 
+        const value = station.map_id
+        return { text, value }
+      })
+      return list
+    },
   },
   mounted() {
     const vue = this
@@ -126,6 +131,12 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+  .train-selection-buttons {
+    display: flex; 
+    flex-wrap: wrap-reverse;
+    align-content: center;
+    justify-content: center;
+    padding: 20px;
+  }
 </style>
