@@ -3,13 +3,13 @@ import {formatDistance, format} from 'date-fns'
 const state = {
   trains: [],
   stations: [],
-  arrivals: {eta: []},
+  arrivals: [],
 }
 
 const getters = {
   getTrains: (state) => state.trains,
   getStations: (state) => state.stations, 
-  getArrivals: (state) => state.arrivals["eta"].map(arrival => {
+  getArrivals: (state) => state.arrivals.map(arrival => {
     const prediction_generated = new Date(arrival.prdt)
     const destination = arrival.destNm 
     const arrival_time = format(new Date(arrival.arrT), 'p') 
@@ -46,7 +46,9 @@ const actions = {
     const http = this._vm.$http 
     return new Promise((resolve, reject) => {
       http.get('/train_tracker', {params: params}).then(response => {
-        commit('setArrivals', response.data.ctatt)
+        if ( response.data.ctatt && response.data.ctatt.eta) {
+          commit('setArrivals', response.data.ctatt.eta)
+        }
         resolve(response) 
       }).catch(error => {
         reject(error) 

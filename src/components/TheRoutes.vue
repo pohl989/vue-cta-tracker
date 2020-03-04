@@ -1,5 +1,6 @@
 <template>
   <div is="sui-segment" inverted>
+    <h1>CTA Train Tracker</h1>
     <h2>1. Select A Train Line</h2>    
     <div v-if="!isLoading">
       <TheSpinner />
@@ -32,7 +33,7 @@
         @click.native="getUpdate"
       />
       <div> 
-        <h3>Station - {{this.selectedStation.station_name}}</h3>
+        <h3 v-if="!!selectedStation">Station - {{this.selectedStation.station_name}}</h3>
        <TrainArrival v-for="arrival in getArrivals" :arrival="arrival" :key="arrival.run_number" /> 
       </div>
     </div>
