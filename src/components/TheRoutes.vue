@@ -1,6 +1,6 @@
 <template>
   <div is="sui-segment" inverted>
-    <h2>Select A Train Line</h2>    
+    <h2>1. Select A Train Line</h2>    
     <div v-if="!isLoading">
       <TheSpinner />
     </div>
@@ -17,29 +17,24 @@
         {{train.name}}
       </sui-button>
     </div>
-    <label>Stations </label>
-    <select v-model="mapId" @change="getUpdate" >
-      <option 
-        v-for="station in selectedTrainStations" 
-        :key="station.map_id" 
-        :value="station.map_id"
-      >
-        {{station.station_name}}
-      </option>
-    </select>
+    <h2>2. Select A Station</h2>    
+
+    <div v-if="!this.selectedTrain">
+      Please select Train Line first
+    </div>
+    <div v-else>
       <sui-dropdown
         placeholder="Station"
         selection
         :options="stationSelectionList"
+        :prompt="'select a station...'"
         v-model="mapId"
-        @change.native="testFunc"
+        @click.native="getUpdate"
       />
-    <div v-if="!this.selectedStation">
-      Please select Train and Station 
-    </div>
-    <div v-else> 
-      <h3>Station - {{this.selectedStation.station_name}}</h3>
-      <TrainArrival v-for="arrival in getArrivals" :arrival="arrival" :key="arrival.run_number" /> 
+      <div> 
+        <h3>Station - {{this.selectedStation.station_name}}</h3>
+       <TrainArrival v-for="arrival in getArrivals" :arrival="arrival" :key="arrival.run_number" /> 
+      </div>
     </div>
   </div>
 </template>
@@ -60,7 +55,7 @@ export default {
       errMessage: "",
       hasError: false,
       trains: [],
-      selectedTrain: "brn", 
+      selectedTrain: "", 
       stations: [],
       selectedTrainStations: [],
       mapId: null, 
@@ -132,6 +127,10 @@ export default {
 </script>
 
 <style scoped>
+  h2 {
+    text-align: left;
+  }
+
   .train-selection-buttons {
     display: flex; 
     flex-wrap: wrap-reverse;
