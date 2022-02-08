@@ -1,22 +1,20 @@
 <template>
-  <div is="sui-segment" inverted>
+  <div>
     <h1>CTA Train Tracker</h1>
     <h2>1. Select A Train Line</h2>    
     <div v-if="!isLoading">
       <TheSpinner />
     </div>
     <div v-else class="train-selection-buttons">
-      <sui-button 
+      <button 
         v-for="train in trains" 
-        :key="train.code" 
-        basic 
-        :color="train.color_name" 
-        inverted
+        :key="train.code"
+        class="line-button"
         :class="{'active': train.code === selectedTrain}" 
-        @click.native="updateSelectedTrain(train.code)"
+        @click="updateSelectedTrain(train.code)"
       >
         {{train.name}}
-      </sui-button>
+      </button>
     </div>
     <h2>2. Select A Station</h2>    
 
@@ -24,14 +22,14 @@
       Please select Train Line first
     </div>
     <div v-else>
-      <sui-dropdown
+      <!-- <sui-dropdown
         placeholder="Station"
         selection
         :options="stationSelectionList"
         :prompt="'select a station...'"
         v-model="mapId"
         @click.native="getUpdate"
-      />
+      /> -->
       <div> 
         <h3 v-if="!!selectedStation">Station - {{this.selectedStation.station_name}}</h3>
        <TrainArrival v-for="arrival in getArrivals" :arrival="arrival" :key="arrival.run_number" /> 
@@ -65,9 +63,6 @@ export default {
   },
   methods: {
     ...mapActions(['fetchStations', 'fetchArrivals']),
-    testFunc: function(e) {
-      debugger
-    },
     updateSelectedTrain: function(code) {
       this.selectedTrain = code
       this.getStations()
