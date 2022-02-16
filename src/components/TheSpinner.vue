@@ -1,30 +1,28 @@
 <template>
   <div class="spinner">
-    <div class="bounce3 lime lighten-2"></div>
-    <div class="bounce2 lime lighten-1"></div>
-    <div class="bounce1 lime"></div>
+    <div class="bounce3 lime lighten-2" />
+    <div class="bounce2 lime lighten-1" />
+    <div class="bounce1 lime" />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'TheSpinner',
+  name: `TheSpinner`
 }
 </script>
 
 <style scoped>
-
-.lime{
+.lime {
   background-color: #dce775;
 }
-.lime.lighten-1{
+.lime.lighten-1 {
   background-color: #e6ee9c;
 }
 
-.lime.lighten-2{
+.lime.lighten-2 {
   background-color: #f0f4c3;
 }
-
 
 .spinner {
   margin: auto auto 0;

@@ -1,27 +1,25 @@
 <template>
   <div>
     <h5>
-      {{arrival.stop_destination}}
-      {{arrival.destination}}
+      {{ arrival.stop_destination }}
+      {{ arrival.destination }}
     </h5>
     <p>
-      {{ arrival.departure_time}}
+      {{ arrival.departure_time }}
     </p>
     <p>
-      {{arrival.arrival_time}}
+      {{ arrival.arrival_time }}
     </p>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'TrainArrival',
+  name: `TrainArrival`,
   props: {
-    arrival: {type: Object}
+    arrival: { type: Object }
   }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
